@@ -1,0 +1,12 @@
+.ant-upload.ant-upload-drag {
+    width: 80vw;
+    height: 50vw;
+    padding: auto;
+    align-content: center;
+}
+
+h1 {
+    text-align: center;
+    font-weight: 900;
+    padding: 1vh 1vw;
+}
