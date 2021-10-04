@@ -6,52 +6,54 @@ import { InboxOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 
-export default function Home() {
+export default function Home(handler) {
 
     var NOMADA_KEY = 'ZTdkNDFkMGYtMWZkNi00ZWU5LThkYTgtYTRlN2UzODNjZGE1';
     var MOVIE_KEY= '30db1237b9167f8afaf9e065b90d16b8';
 
-
-    //const [image, setImage] = useState('')
-
+    
+    const [image, setImage] = useState('')
+    
+    
     const { Dragger } = Upload;
+
     
     const props = {
         name: 'file',
         multiple: false,
         maxCount: 1,
         accept: '.png, .PNG, .jpg, .JPG',
-        action: null,
-        method: 'POST',
-        file: '',
+        action: `https://whois.nomada.cloud/upload?Nomada=${NOMADA_KEY}&file=${image}`,
+        type:'file multipart/form-data',
+        id: 'image',
+
         onChange(info) {
             const { status } = info.file;
+
             if (status !== 'uploading') {
                 console.log(info.file, info.fileList);
             }
             if (status === 'done') {
-                //message.success(`${info.file.name} file uploaded successfully.`)
-                console.log("Linea 31", info.file.uid)
+                message.success(`${info.file.name} file uploaded successfully.`)
+                setImage(info.file.originFileObj)
             } else if (status === 'error') {
-                //message.error(`${info.file.name} file upload failed.`);
-                console.log("Linea 34", info.file.uid)
-                axios.post( `https://whois.nomada.cloud/upload?nomada=${NOMADA_KEY}&file=${info.file.uid}`)
-                    .then(res => console.log(res))
-                    .catch(err => console.log(err))
+                message.error(`${info.file.name} file upload failed.`);
+                setImage(info.file.originFileObj)
             }
         },
-        
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
+
+        onDrop(info) {
+            console.log('Dropped files', info.dataTransfer.files);
+            setImage(info.file.originFileObj)
         },
     };
 
     return(
         <div>
             <h1>¿Quien es este actor?</h1>
-            <Dragger {...props} >
+            <Dragger {...props}>
                 <p className="ant-upload-drag-icon">
-                    <InboxOutlined />
+                    <InboxOutlined id='input'/>
                 </p>
                 <p className="ant-upload-text">
                     Click or drag file to this area to upload
